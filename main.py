@@ -13,7 +13,7 @@ async def lifespan(app: FastAPI):
     print("Starting FastAPI service")
     
     # Connect to RabbitMQ server
-    connection = await aio_pika.connect_robust("amqp://guest:guest@localhost/")
+    connection = await aio_pika.connect_robust("amqp://guest:guest@rabbitmq/")
     print("Connected to RabbitMQ service")
     
     channel = await connection.channel()
