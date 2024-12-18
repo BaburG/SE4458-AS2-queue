@@ -1,75 +1,53 @@
-# Payment Processing Service
+# Assignment 2 Queue - Payment Processing Service
 
-This project demonstrates a basic **payment processing service** built with **FastAPI** and **RabbitMQ**. The service includes endpoints to submit payment information and processes the requests asynchronously. The processed requests are routed to a notification queue to notify users.
+### Overview
 
-## Features
-- Accept payment information via a POST endpoint.
-- Process payment asynchronously using RabbitMQ.
-- Send payment notifications to a separate queue for further processing.
+This project is a **payment processing service** built with **FastAPI** and **RabbitMQ**. The service allows users to submit payment information, processes these payments asynchronously, and sends notifications once payments are successfully processed.
 
 ---
 
-## Design Overview
+### Development
 
-1. **FastAPI Application**:
-   - Accepts payment requests.
-   - Publishes the request to the `payment_queue`.
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd <repository-folder>
+   ```
 
-2. **RabbitMQ**:
-   - Acts as the message broker.
-   - Two queues:
-     - `payment_queue`: Receives payment requests.
-     - `notification_queue`: Receives notifications after payments are processed.
-
-3. **Consumers**:
-   - `process_payment`: Consumes from `payment_queue` and processes payment information.
-   - `notify`: Consumes from `notification_queue` to simulate user notifications.
-
----
-
-## Assumptions
-- **Payment Validity**: The system assumes all payment information provided is correct and valid.
-
----
-
-## Project Setup and Running
-
-### Prerequisites
-- **Docker** and **Docker Compose** must be installed on your machine.
-
----
-
-### Run the Project
-1. Clone the repository.
-2. Run the following command in the project directory:
+2. **Start the services** using Docker Compose:
    ```bash
    docker-compose up
    ```
-3. The FastAPI app will be available at `http://127.0.0.1:8000`.
-4. RabbitMQ Management UI will be available at `http://127.0.0.1:15672`. Use `guest/guest` for username and password.
+
+3. **RabbitMQ Management UI**:
+   - Accessible at `http://127.0.0.1:15672` with credentials:
+     - Username: `guest`
+     - Password: `guest`
+
+4. **FastAPI Application**:
+   - Accessible at `http://127.0.0.1:8000`.
+
+5. **Stop the services**:
+   ```bash
+   docker-compose down
+   ```
 
 ---
 
-### Stop the Project
-To stop and remove containers, networks, and volumes created by Docker Compose:
-```bash
-docker-compose down
-```
+### Production
+
+- The application is containerized and can be deployed using Docker or similar orchestration platforms.
 
 ---
 
-## Endpoint
+### Routes
 
-### **POST `/make-payment`**
+| **Route**               | **Description**                                                                 |
+|--------------------------|---------------------------------------------------------------------------------|
+| `GET /`                 | Root endpoint. Returns a simple "Hello World" message.                          |
+| `POST /make-payment`    | Accepts payment information and sends it to the `payment_queue` for processing. |
 
-- **Description**: Accepts payment information and publishes it to the `payment_queue`.
-- **Content-Type**: `application/x-www-form-urlencoded`
-- **Request Body**:
-  - `user` (string): User's name.
-  - `paymentType` (string): Payment type.
-  - `cardNo` (string): Card number.
-
-#### Example Curl Command:
+#### Example Curl Command
 ```bash
 curl --location 'http://127.0.0.1:8000/make-payment' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
@@ -80,36 +58,29 @@ curl --location 'http://127.0.0.1:8000/make-payment' \
 
 ---
 
-### Response Example
-- **Success**:
-  ```json
-  {
-    "status": "Payment request sent"
-  }
-  ```
-- **Error**: If any field is missing or invalid:
-  ```json
-  {
-    "detail": "EMPTY FIELD"
-  }
-  ```
+### Assumptions
+
+- **Payment Validity**: The system assumes that all provided payment information is correct and valid.
 
 ---
 
-## Key Notes
-- **Port Mapping**:
-  - FastAPI service: `8000`
-  - RabbitMQ Management UI: `15672`
-- **Dependencies**:
-  - Python version: `3.11`
-  - Refer to `requirements.txt` for all Python dependencies.
-- **Docker**: The project includes a `Dockerfile` and `docker-compose.yaml` to streamline deployment.
+### Features
+
+- **Asynchronous Processing**: Payment requests are processed asynchronously using RabbitMQ.
+- **Queue-Based Architecture**:
+  - `payment_queue`: Handles incoming payment requests.
+  - `notification_queue`: Sends notifications after successful payment processing.
 
 ---
 
-## RabbitMQ Configuration
-- RabbitMQ is preconfigured with default credentials (`guest/guest`) and two queues:
-  - `payment_queue`
-  - `notification_queue`
+### RabbitMQ Configuration
 
-Ensure RabbitMQ is running and accessible for the FastAPI service to function correctly.
+- RabbitMQ is configured with:
+  - Two queues: `payment_queue` and `notification_queue`.
+  - Default credentials: `guest/guest`.
+
+---
+
+### Documentation
+
+- **YouTube Presentation & Explanation**: [YouTube Link](https://youtu.be/8dTybm3kJK8)
