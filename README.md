@@ -10,8 +10,8 @@ This project is a **payment processing service** built with **FastAPI** and **Ra
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone https://github.com/BaburG/SE4458-AS2-queue.git
+   cd https://github.com/BaburG/SE4458-AS2-queue.git
    ```
 
 2. **Start the services** using Docker Compose:
